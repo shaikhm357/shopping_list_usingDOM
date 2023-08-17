@@ -1,6 +1,8 @@
 const form = document.getElementById('item-form')
 const itemInput = document.getElementById('item-input')
 const itemLists = document.querySelector('ul')
+const itemClear = document.getElementById('clr')
+const filterItem = document.getElementById('filter')
 
 function addItem(e) {
   e.preventDefault()
@@ -17,6 +19,7 @@ function addItem(e) {
   const button = createButton('border-0 text-danger float-end')
   li.appendChild(button)
   itemLists.appendChild(li)
+  checkUi()
   itemInput.value = ''
 }
 //creating button
@@ -27,4 +30,45 @@ function createButton(classes) {
   return button
 }
 
+function removeItem(e) {
+  if (e.target.parentElement.classList.contains('remove-item')) {
+    if (confirm('Are you sure')) {
+      e.target.parentElement.remove()
+    }
+  }
+  checkUi()
+}
+
+function clearAll(e) {
+  // const allItems = document.querySelectorAll('li')
+  // allItems.forEach((item) => {
+  //   item.remove()
+  // })
+
+  while (itemLists.firstChild) {
+    itemLists.firstChild.remove()
+  }
+  checkUi()
+  // console.log(itemLists)
+}
+
+function checkUi() {
+  const items = itemLists.querySelectorAll('li')
+  console.log(items)
+  if (items.length === 0) {
+    const div = document.getElementById('clr-div')
+    console.log(div.classList)
+    div.className = 'd-none'
+    filterItem.className = 'd-none'
+  } else {
+    const div = document.getElementById('clr-div')
+    div.className = 'd-grid mt-5'
+    filterItem.className = 'none'
+  }
+  console.log(itemLists)
+}
+
 form.addEventListener('submit', addItem)
+itemLists.addEventListener('click', removeItem)
+itemClear.addEventListener('click', clearAll)
+checkUi()

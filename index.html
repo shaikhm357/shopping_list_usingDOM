@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="script.js" defer></script>
-    <link rel="stylesheet" href="index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -25,26 +24,28 @@
         </form>
         <div>
             <form">
-                <div class="my-3 filter">
+                <div class="my-3 id" id="filter">
                     <input type="text" class="form-control-plaintext border-bottom " placeholder="Filter Item">
                 </div>
                 </form>
         </div>
         <div class="my-4">
             <ul class="list-group list-unstyled">
-                <li class="list-group-item bg-light">Apples <button class="border-0 text-danger float-end">x</button>
-                </li>
-                <li class="list-group-item bg-light">Orange Juice <button
+                <li class="list-group-item bg-light remove-item">Apples <button
                         class="border-0 text-danger float-end">x</button>
                 </li>
-                <li class="list-group-item bg-light">vegitables <button
+                <li class="list-group-item bg-light remove-item">Orange Juice <button
                         class="border-0 text-danger float-end">x</button>
                 </li>
-                <li class="list-group-item bg-light">Cloths <button class="border-0 text-danger float-end">x</button>
+                <li class="list-group-item bg-light remove-item">vegitables <button
+                        class="border-0 text-danger float-end">x</button>
+                </li>
+                <li class="list-group-item bg-light remove-item">Cloths <button
+                        class="border-0 text-danger float-end">x</button>
                 </li>
 
             </ul>
-            <div class="d-grid mt-5">
+            <div class="d-grid mt-5" id="clr-div">
                 <button type="button" id="clr" class="btn btn-dark btn-sm btn-block">Clear All</button>
             </div>
         </div>
