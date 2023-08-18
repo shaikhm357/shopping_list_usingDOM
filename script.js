@@ -19,9 +19,18 @@ function onAddItemSubmit(e) {
   e.preventDefault()
   const item = itemInput.value
   if (!item) {
-    alert('plx add something first')
+    alert('plz add something first')
     return
   }
+
+  if (isEditMode) {
+    const itemToEdit = itemLists.querySelector('.text-secondary')
+    itemToEdit.classList.remove('text-secondary')
+    itemToEdit.remove()
+    removeItemFromLocalStorage(itemToEdit.firstChild.textContent)
+    isEditMode = false
+  }
+
   //create item dom
   addItemToDom(item)
   //add item to localstorage
@@ -76,7 +85,6 @@ function onClickItem(e) {
 }
 
 function setItemToEdit(item) {
-  console.log(item)
   isEditMode = true
 
   itemLists.querySelectorAll('li').forEach((i) => i.classList.remove('text-secondary'))
@@ -126,6 +134,7 @@ function clearAll(e) {
 }
 
 function checkUi() {
+  itemInput.value = ''
   const items = itemLists.querySelectorAll('li')
   if (items.length === 0) {
     const div = document.getElementById('clr-div')
@@ -136,6 +145,11 @@ function checkUi() {
     div.className = 'd-grid mt-5'
     filterItem.className = 'none'
   }
+
+  formBtn.classList.add('bg-dark')
+  formBtn.textContent = '+ Add Item'
+
+  isEditMode = false
 }
 
 function filter(e) {
