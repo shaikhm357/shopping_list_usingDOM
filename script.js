@@ -29,8 +29,13 @@ function onAddItemSubmit(e) {
     itemToEdit.remove()
     removeItemFromLocalStorage(itemToEdit.firstChild.textContent)
     isEditMode = false
+  } else {
+    if (checkIfItemExist(item)) {
+      alert('Item Already Exists')
+      checkUi()
+      return
+    }
   }
-
   //create item dom
   addItemToDom(item)
   //add item to localstorage
@@ -82,6 +87,11 @@ function onClickItem(e) {
   } else {
     setItemToEdit(e.target)
   }
+}
+
+function checkIfItemExist(item) {
+  const itemsFromStrorage = getItemsFromStorage()
+  return itemsFromStrorage.includes(item)
 }
 
 function setItemToEdit(item) {
