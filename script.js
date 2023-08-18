@@ -4,24 +4,58 @@ const itemLists = document.querySelector('ul')
 const itemClear = document.getElementById('clr')
 const filterItem = document.getElementById('filter')
 
-function addItem(e) {
+function displayItems() {
+  const itemFromStorage = getItemsFromStorage()
+  itemFromStorage.forEach((item) => {
+    addItemToDom(item)
+  })
+  checkUi()
+}
+
+function onAddItemSubmit(e) {
   e.preventDefault()
   const item = itemInput.value
   if (!item) {
     alert('plx add something first')
     return
   }
+  //create item dom
+  addItemToDom(item)
+  //add item to localstorage
+  addItemToStorage(item)
+  checkUi()
+  itemInput.value = ''
+}
+
+function addItemToDom(item) {
   //create li
   const li = document.createElement('li')
-  li.className = 'list-group-item bg-light'
+  li.className = 'list-group-item bg-light remove-item float-end'
   li.appendChild(document.createTextNode(item))
   //create button
   const button = createButton('border-0 text-danger float-end')
   li.appendChild(button)
   itemLists.appendChild(li)
-  checkUi()
-  itemInput.value = ''
 }
+
+function getItemsFromStorage() {
+  let itemFromStorage
+  if (localStorage.getItem('items') === null) {
+    itemFromStorage = []
+  } else {
+    itemFromStorage = JSON.parse(localStorage.getItem('items'))
+  }
+  return itemFromStorage
+}
+
+function addItemToStorage(item) {
+  let itemFromStorage = getItemsFromStorage()
+
+  //add new item to array
+  itemFromStorage.push(item)
+  localStorage.setItem('items', JSON.stringify(itemFromStorage))
+}
+
 //creating button
 function createButton(classes) {
   const button = document.createElement('button')
@@ -30,13 +64,30 @@ function createButton(classes) {
   return button
 }
 
-function removeItem(e) {
+function onClickItem(e) {
   if (e.target.parentElement.classList.contains('remove-item')) {
-    if (confirm('Are you sure')) {
-      e.target.parentElement.remove()
-    }
+    removeItem(e.target.parentElement)
   }
-  checkUi()
+}
+
+function removeItem(item) {
+  console.log(item.firstChild.textContent)
+  if (confirm('Are you sure')) {
+    //remove item form DOM
+    item.remove()
+
+    //remove irem form LocalStorage
+    removeItemFromLocalStorage(item.firstChild.textContent)
+
+    checkUi()
+  }
+}
+
+function removeItemFromLocalStorage(item) {
+  let itemFromStorage = getItemsFromStorage()
+  itemFromStorage = itemFromStorage.filter((storedItem) => storedItem != item)
+  //set item in local storage
+  localStorage.setItem('items', JSON.stringify(itemFromStorage))
 }
 
 function clearAll(e) {
@@ -48,16 +99,18 @@ function clearAll(e) {
   while (itemLists.firstChild) {
     itemLists.firstChild.remove()
   }
+
+  //clear from localstorage
+  localStorage.removeItem('items')
+
   checkUi()
   // console.log(itemLists)
 }
 
 function checkUi() {
   const items = itemLists.querySelectorAll('li')
-  console.log(items)
   if (items.length === 0) {
     const div = document.getElementById('clr-div')
-    console.log(div.classList)
     div.className = 'd-none'
     filterItem.className = 'd-none'
   } else {
@@ -65,10 +118,29 @@ function checkUi() {
     div.className = 'd-grid mt-5'
     filterItem.className = 'none'
   }
-  console.log(itemLists)
 }
 
-form.addEventListener('submit', addItem)
-itemLists.addEventListener('click', removeItem)
-itemClear.addEventListener('click', clearAll)
-checkUi()
+function filter(e) {
+  const items = itemLists.querySelectorAll('li')
+  const alphabet = e.target.value.toLowerCase()
+  items.forEach((item) => {
+    const itemName = item.firstChild.textContent.toLowerCase()
+    if (itemName.indexOf(alphabet) != -1) {
+      item.style.display = 'flex'
+    } else {
+      item.style.display = 'none'
+    }
+  })
+  // console.log(e.target.value)
+}
+
+function init() {
+  form.addEventListener('submit', onAddItemSubmit)
+  itemLists.addEventListener('click', onClickItem)
+  itemClear.addEventListener('click', clearAll)
+  filterItem.addEventListener('input', filter)
+  document.addEventListener('DOMContentLoaded', displayItems)
+  checkUi()
+}
+
+init()
