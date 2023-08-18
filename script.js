@@ -3,6 +3,9 @@ const itemInput = document.getElementById('item-input')
 const itemLists = document.querySelector('ul')
 const itemClear = document.getElementById('clr')
 const filterItem = document.getElementById('filter')
+const formBtn = form.querySelector('button')
+
+let isEditMode = false
 
 function displayItems() {
   const itemFromStorage = getItemsFromStorage()
@@ -67,7 +70,22 @@ function createButton(classes) {
 function onClickItem(e) {
   if (e.target.parentElement.classList.contains('remove-item')) {
     removeItem(e.target.parentElement)
+  } else {
+    setItemToEdit(e.target)
   }
+}
+
+function setItemToEdit(item) {
+  console.log(item)
+  isEditMode = true
+
+  itemLists.querySelectorAll('li').forEach((i) => i.classList.remove('text-secondary'))
+
+  item.classList.add('text-secondary')
+  formBtn.textContent = '✏️ Update item'
+  formBtn.classList.add('bg-success')
+
+  itemInput.value = item.firstChild.textContent
 }
 
 function removeItem(item) {
