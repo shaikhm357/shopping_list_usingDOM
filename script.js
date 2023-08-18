@@ -101,7 +101,7 @@ function setItemToEdit(item) {
 
   item.classList.add('text-secondary')
   formBtn.textContent = '✏️ Update item'
-  formBtn.classList.add('bg-success')
+  formBtn.className = 'btn btn-success btn-sm'
 
   itemInput.value = item.firstChild.textContent
 }
@@ -156,7 +156,7 @@ function checkUi() {
     filterItem.className = 'none'
   }
 
-  formBtn.classList.add('bg-dark')
+  formBtn.classList.add('btn-dark')
   formBtn.textContent = '+ Add Item'
 
   isEditMode = false
