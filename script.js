@@ -47,7 +47,7 @@ function onAddItemSubmit(e) {
 function addItemToDom(item) {
   //create li
   const li = document.createElement('li')
-  li.className = 'list-group-item bg-light remove-item float-end'
+  li.className = 'list-group-item bg-light remove-item float-end border'
   li.appendChild(document.createTextNode(item))
   //create button
   const button = createButton('border-0 text-danger float-end')
@@ -153,7 +153,7 @@ function checkUi() {
   } else {
     const div = document.getElementById('clr-div')
     div.className = 'd-grid mt-5'
-    filterItem.className = 'none'
+    filterItem.className = 'my-3'
   }
 
   formBtn.classList.add('btn-dark')
